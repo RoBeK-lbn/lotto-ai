@@ -134,16 +134,16 @@ footer {
 </div><div class="grid"><div class="card">
 <h2>Analiza dzień → noc</h2>
 <div class="stats">
-<p>Powtarzalność: 42%</p>
-<p>Najczęstsza liczba: 24</p>
-<p>Najczęstszy układ: 7-24-55</p>
+<p><div class="stats" id="dayNightStats">
+Ładowanie analizy...
+</div>
 </div>
 </div><div class="card">
 <h2>Analiza noc → dzień</h2>
 <div class="stats">
-<p>Powtarzalność: 37%</p>
-<p>Najczęstsza liczba: 18</p>
-<p>Najczęstszy układ: 12-18-41</p>
+<p><div class="stats" id="dayNightStats">
+Ładowanie analizy...
+</div>
 </div>
 </div></div><div class="card">
 <h2>AI Generator Typów</h2>
@@ -250,8 +250,53 @@ box.appendChild(div);
 });
 
 }
+function analyzeDayNight(){
 
+const dayDraws = [
+[7,12,18,24,33],
+[24,41,55,66,71],
+[7,18,24,41,55]
+];
+
+const nightDraws = [
+[24,18,41,7,55],
+[12,24,66,71,33],
+[18,24,41,55,80]
+];
+
+let repeated = 0;
+let total = 0;
+
+dayDraws.forEach((draw,index)=>{
+
+draw.forEach(num=>{
+
+if(nightDraws[index].includes(num)){
+repeated++;
+}
+
+total++;
+
+});
+
+});
+
+const percentage =
+Math.round((repeated/total)*100);
+
+const html = `
+<p>Powtarzalność dzień → noc: ${percentage}%</p>
+<p>Powtórzone liczby: ${repeated}</p>
+<p>Sprawdzonych liczb: ${total}</p>
+<p>Najczęstsze przejścia: 24 → 24, 18 → 18</p>
+`;
+
+document.getElementById(
+"dayNightStats"
+).innerHTML = html;
+
+}
 calculateHotNumbers();
-
+analyzeDayNight();
 </script>/body>
 </html>
