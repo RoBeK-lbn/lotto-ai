@@ -161,29 +161,97 @@ Pobierz aktualne wyniki
 </button>
 </div></div><footer>
 Lotto AI Analyzer PRO © 2026
-</footer><script>
-function generateNumbers() {
-  const box = document.getElementById('generatedNumbers');
-  box.innerHTML = '';
+</footer></<script>
 
-  const generated = [];
+const historicalNumbers = [
+7,12,18,24,33,41,55,66,71,80,
+24,18,41,7,55,12,66,24,71,33,
+18,24,41,55,7,12,71,80,66,33,
+24,24,18,18,41,41,55,55,7,7
+];
 
-  while(generated.length < 6) {
-    let n = Math.floor(Math.random() * 80) + 1;
+function calculateHotNumbers() {
 
-    if(!generated.includes(n)) {
-      generated.push(n);
-    }
-  }
+const stats = {};
 
-  generated.sort((a,b)=>a-b);
+historicalNumbers.forEach(num => {
+stats[num] = (stats[num] || 0) + 1;
+});
 
-  generated.forEach(num => {
-    const div = document.createElement('div');
-    div.className = 'number';
-    div.innerText = num;
-    box.appendChild(div);
-  });
+const sorted = Object.entries(stats)
+.sort((a,b)=>b[1]-a[1]);
+
+const box = document.getElementById("numbersBox");
+
+box.innerHTML = "";
+
+sorted.slice(0,10).forEach(item => {
+
+const div = document.createElement("div");
+
+div.className = "number";
+
+div.innerText = item[0];
+
+box.appendChild(div);
+
+});
+
 }
-</script></body>
+
+function generateNumbers() {
+
+const generated = [];
+
+const stats = {};
+
+historicalNumbers.forEach(num => {
+stats[num] = (stats[num] || 0) + 1;
+});
+
+const weighted = [];
+
+Object.entries(stats).forEach(([num,count]) => {
+
+for(let i=0;i<count;i++) {
+weighted.push(Number(num));
+}
+
+});
+
+while(generated.length < 6){
+
+const random =
+weighted[Math.floor(Math.random()*weighted.length)];
+
+if(!generated.includes(random)){
+generated.push(random);
+}
+
+}
+
+generated.sort((a,b)=>a-b);
+
+const box =
+document.getElementById("generatedNumbers");
+
+box.innerHTML = "";
+
+generated.forEach(num => {
+
+const div = document.createElement("div");
+
+div.className = "number";
+
+div.innerText = num;
+
+box.appendChild(div);
+
+});
+
+}
+
+calculateHotNumbers();
+
+</script>/body>
 </html>
